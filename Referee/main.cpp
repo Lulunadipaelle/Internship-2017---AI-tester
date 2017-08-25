@@ -1,8 +1,7 @@
-#include "AI.h"
-#include "Functions.h"
+#include "../AI/AI.h"
+#include "../AI/Functions.h"
 #include <windows.h>
 //#include <winsock2.h>
-#pragma comment(lib,"ws_32.lib")
 
 using namespace std;
 
@@ -40,7 +39,7 @@ int main(int argc, char **argv)
     sin.sin_family		= AF_INET;
     sin.sin_port		= htons(2000);
     
-    if (bind(mySocket, (SOCKADDR*) &sin, sizeof(sin)) == SOCKET_ERROR) {
+    if (bind(sock, (SOCKADDR*) &sin, sizeof(sin)) == SOCKET_ERROR) {
         cerr << "Server socket : Failed to connect (bind)" << endl;
         WSACleanup();
         exit(12);
@@ -50,9 +49,9 @@ int main(int argc, char **argv)
     BoardToFile(playboard, "playboard.txt");
     cout << "Board file set." << endl;
     //Set the begining player;
-    if ((r  and() % 2 + 1) == 1) {
+    if ((rand() % 2 + 1) == 1) {
         Ap = p1;
-    else {
+    } else {
         Ap = p2;
     }
     listen(sock,0);
@@ -65,9 +64,8 @@ int main(int argc, char **argv)
 
         }
         //Wait for the player program to send its play
-        if (accept(mySocket, (SOCKADDR *)&))
         int sinsize = sizeof(csin);
-        if (csock = accept(sock, (SOCKADDR *)&csin, &sinsize) == INVALID_SOCKET) {
+        if ((csock = accept(sock, (SOCKADDR *)&csin, &sinsize)) == INVALID_SOCKET) {
             cerr << "Server socket : Invalid socket received (socket accept Ap = 1)" << endl;
             WSACleanup();
             exit(13);
