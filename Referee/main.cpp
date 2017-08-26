@@ -57,20 +57,23 @@ int main(int argc, char **argv)
     listen(sock,0);
     while (win == false) {
         if (Ap.getPlayer() == p1.getPlayer()) { //tester turn
-            system("F:\\My_Projects\\Internship-2017-AI-tester\\AI\\Debug\\AI.exe"); //TODO Set the exe file for the tester
-                
+            //system("start cmd.exe /k F:\\My_Projects\\Internship-2017-AI-tester\\AI\\Debug\\AI.exe"); //TODO Set the exe file for the tester
+                cout << "Player 1 must send their play" << endl;
         } else { //AI turn
-            system("F:\\My_Projects\\Internship-2017-AI-tester\\UI\\Debug\\UI.exe"); //TODO Set the exe file for the AI to test
-
+            //system("start cmd.exe /k F:\\My_Projects\\Internship-2017-AI-tester\\UI\\Debug\\UI.exe"); //TODO Set the exe file for the AI to test
+            cout << "Player 2 must send their play" << endl;
         }
         //Wait for the player program to send its play
+        cout << "Waiting for connection..." << endl;
         int sinsize = sizeof(csin);
         if ((csock = accept(sock, (SOCKADDR *)&csin, &sinsize)) == INVALID_SOCKET) {
-            cerr << "Server socket : Invalid socket received (socket accept Ap = 1)" << endl;
+            cerr << "Server socket : Invalid socket received (socket accept)" << endl;
             WSACleanup();
             exit(13);
         }
+        cout << "Connection with player successfull. Waiting for play..." << endl;
         recv(sock, buffer, sizeof(buffer), 0);
+        cout << "Row number" << buffer << "received, setting token..." << endl;
         row = atoi(buffer);
         playboard.setToken(row, Ap);
         //TODO Changer la méthode setToken pour qu'elle renvoie une erreur si row est invalide
@@ -89,6 +92,7 @@ int main(int argc, char **argv)
         cout << "The winner is the tested AI, congratulations !" << endl;
     } else {
         cout << "The winner is the tester, better luck next time !" << endl;
+    win = true;
     }
 	return 0;
 }
