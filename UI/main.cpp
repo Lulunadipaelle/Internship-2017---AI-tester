@@ -17,15 +17,23 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
     p2.setPlayer(false);
     Box source[6][7];
     Board playboard(source, 6, 7);
-    playboard = FileToBoard("playboard.txt");
+    playboard = FileToBoard("F:\\My_Projects\\Internship-2017-AI-tester\\playboard.txt");
     
     //Init and bind socket
     sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock == INVALID_SOCKET) {
+        cerr << "Socket init error (creating socket in UI)" << endl;
+        WSACleanup();
+        exit(11);
+    }
     sin.sin_addr.s_addr = inet_addr("127.0.0.1");
     sin.sin_family = AF_INET;
     sin.sin_port = htons(2000);
-    connect(sock, (SOCKADDR *)&sin, sizeof(sin));    
-    
+    if (connect(sock, (SOCKADDR *)&sin, sizeof(sin)) == SOCKET_ERROR) {
+        cerr << "Socket connect error (connecting to socket in UI)" << endl;
+        WSACleanup();
+        exit(12);
+    }
     //Display the board to the user
     cout << "Welcome, Player 2 !" << endl;
     for (int i=5;i>=0;i--) {

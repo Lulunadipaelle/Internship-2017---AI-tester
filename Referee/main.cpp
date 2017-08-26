@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     }
     cout << endl;
     //Init board
-    BoardToFile(playboard, "playboard.txt");
+    BoardToFile(playboard, "F:\\My_Projects\\Internship-2017-AI-tester\\playboard.txt");
     cout << "Board file set." << endl;
     //Set the begining player;
     if ((rand() % 2 + 1) == 1) {
