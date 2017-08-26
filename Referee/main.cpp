@@ -1,12 +1,16 @@
 #include "../AI/AI.h"
 #include "../AI/Functions.h"
 #include <windows.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 //#include <winsock2.h>
 
 using namespace std;
 
 int main(int argc, char **argv)
 {
+    srand (time(NULL));
     WSADATA WSAData;
     SOCKET sock;
     SOCKET csock;
@@ -37,7 +41,7 @@ int main(int argc, char **argv)
     //Bind socket
     sin.sin_addr.s_addr	= inet_addr("127.0.0.1");
     sin.sin_family		= AF_INET;
-    sin.sin_port		= htons(2000);
+    sin.sin_port		= htons(4567);
     
     if (bind(sock, (SOCKADDR*) &sin, sizeof(sin)) == SOCKET_ERROR) {
         cerr << "Server socket : Failed to connect (bind)" << endl;
@@ -82,6 +86,7 @@ int main(int argc, char **argv)
         if (playboard.getScoreWinLose(Ap) == 2) {
             win = true;
         }
+        win = true;
         //Close player sock
         closesocket(csock);
         Ap.setPlayer(!Ap.getPlayer()); //Change turns
@@ -92,7 +97,6 @@ int main(int argc, char **argv)
         cout << "The winner is the tested AI, congratulations !" << endl;
     } else {
         cout << "The winner is the tester, better luck next time !" << endl;
-    win = true;
     }
 	return 0;
 }
