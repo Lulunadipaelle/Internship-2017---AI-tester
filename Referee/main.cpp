@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     SOCKADDR_IN sin;
     SOCKADDR_IN csin;
     char buffer[255];
-    int depth = atoi(argv[1]);
+    //int depth = atoi(argv[1]);
     bool win = false;
     Player p1, p2, Ap; //p1 = tester, p2 = newcomer, Ap = active player
     p2.setPlayer(false);
@@ -57,10 +57,10 @@ int main(int argc, char **argv)
     listen(sock,0);
     while (win == false) {
         if (Ap.getPlayer() == p1.getPlayer()) { //tester turn
-            system(".exe"); //TODO Set the exe file for the tester
+            system("F:\\My_Projects\\Internship-2017-AI-tester\\AI\\Debug\\AI.exe"); //TODO Set the exe file for the tester
                 
         } else { //AI turn
-            system(".exe"); //TODO Set the exe file for the AI to test
+            system("F:\\My_Projects\\Internship-2017-AI-tester\\UI\\Debug\\UI.exe"); //TODO Set the exe file for the AI to test
 
         }
         //Wait for the player program to send its play

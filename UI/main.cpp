@@ -11,7 +11,6 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
     SOCKET sock;
     SOCKADDR_IN sin;
     char* msg = "";
-    int depth = atoi(argv[1]);
     WSAStartup(MAKEWORD(2,0), &WSAData);
 	//Initialiser le board ici
     Player p1, p2;

@@ -55,8 +55,6 @@ std::pair<int, int> BestPlay(Player P, Board board, int depth) {
 Board FileToBoard(char const *filename) {
     Box source[6][7];
     int stock;
-    bool test = true;
-    std::cout << test <<endl;
     Player p1,p2;
     p2.setPlayer(false);
     Board board(source, 6, 7);
@@ -65,7 +63,6 @@ Board FileToBoard(char const *filename) {
         for (int i=5;i>=0;i--) {
             for (int j =0;j<7;j++) {
                 boardFile >> stock;
-                std::cout << stock;
                 switch (stock) {
                     case 0:
                         board.setBox(i,j,p1,false);
