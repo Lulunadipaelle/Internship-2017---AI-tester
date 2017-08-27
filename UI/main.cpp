@@ -7,35 +7,17 @@ using namespace std;
 
 int main(int argc, char **argv) //Find the best play from a given board in a file
 {   
-    WSADATA WSAData;
-    SOCKET sock;
-    SOCKADDR_IN sin;
-    char* msg;
-    WSAStartup(MAKEWORD(2,0), &WSAData);
-	//Initialiser le board ici
+
+    string msg;
+    HANDLE hPipe;
+    DWORD dwWritten;
+	//Init board here
     Player p1, p2;
     p2.setPlayer(false);
     Box source[6][7];
     Board playboard(source, 6, 7);
     playboard = FileToBoard("F:\\My_Projects\\Internship-2017-AI-tester\\playboard.txt");
     
-    //Init and bind socket
-    sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock == INVALID_SOCKET) {
-        cerr << "Socket init error (creating socket in UI)" << endl;
-        WSACleanup();
-        exit(11);
-    }
-    sin.sin_addr.s_addr = inet_addr("127.0.0.1");
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(2000);
-    cout << "Connecting to Referee..." << endl;
-    if (connect(sock, (SOCKADDR *)&sin, sizeof(sin)) == SOCKET_ERROR) {
-        cerr << "Socket connect error (connecting to socket in UI)" << endl;
-        WSACleanup();
-        exit(12);
-    }
-    system("PAUSE");
     //Display the board to the user
     cout << "Welcome, Player 2 !" << endl;
     for (int i=5;i>=0;i--) {
@@ -53,11 +35,25 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
     
     //Ask for the row to play
     cout << "Enter here the number of the row where you want to play (between 0 and 6)" << endl;
+	system("PAUSE");
     cin >> msg;
-    cout << "Row received. Sending play to referee..." << endl;
-    send(sock, msg, 1,0);
-    
-    closesocket(sock);
-    WSACleanup();
+	cout << endl << msg << endl;
+	
+	    hPipe = CreateFile(TEXT("\\\\.\\pipe\\Pipe"), 
+                       GENERIC_READ | GENERIC_WRITE, 
+                       0,
+                       NULL,
+                       OPEN_EXISTING,
+                       0,
+                       NULL);
+    if (hPipe != INVALID_HANDLE_VALUE) {
+        WriteFile(hPipe,
+                  msg.c_str(),
+                  12,   // = length of string + terminating '\0' !!!
+                  &dwWritten,
+                  NULL);
+
+        CloseHandle(hPipe);
+    }
     return 0;
 }

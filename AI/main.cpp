@@ -1,47 +1,43 @@
+#include "main.h"
 #include "AI.h"
 #include "Functions.h"
-#include "main.h"
 #include <winsock2.h>
-
 using namespace std;
 
 
 int main(int argc, char **argv) //Find the best play from a given board in a file
 {   
-    WSADATA WSAData;
-    SOCKET sock;
-    SOCKADDR_IN sin;
-    char* msg = "";
-    //int depth = atoi(argv[1]);
-    int depth = 6;
-    WSAStartup(MAKEWORD(2,0), &WSAData);
-	//Initialiser le board ici
+    int depth = 8;
+    string msg;
+    HANDLE hPipe;
+    DWORD dwWritten;
+	//Init board here
     Player p1, p2;
     p2.setPlayer(false);
     Box source[6][7];
     Board playboard(source, 6, 7);
     playboard = FileToBoard("F:\\My_Projects\\Internship-2017-AI-tester\\playboard.txt");
     
-    //Init and bind socket
-    sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock == INVALID_SOCKET) {
-        cerr << "Socket init error (creating socket in AI)" << endl;
-        WSACleanup();
-        exit(11);
-    }
-    sin.sin_addr.s_addr = inet_addr("127.0.0.1");
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(2000);
-    if (connect(sock, (SOCKADDR *)&sin, sizeof(sin)) == SOCKET_ERROR) {
-        cerr << "Socket connect error (connecting to socket in AI)" << endl;
-        WSACleanup();
-        exit(12);
-    }
+    //Ask for the row to play
     std::pair<int, int> play = BestPlay(p1, playboard, depth);
-    itoa(play.second, msg, 10);
-    send(sock, msg, 1,0);
-    
-    closesocket(sock);
-    WSACleanup();
+    //msg << play.second;
+    msg = to_string(play.second);
+	
+	    hPipe = CreateFile(TEXT("\\\\.\\pipe\\Pipe"), 
+                       GENERIC_READ | GENERIC_WRITE, 
+                       0,
+                       NULL,
+                       OPEN_EXISTING,
+                       0,
+                       NULL);
+    if (hPipe != INVALID_HANDLE_VALUE) {
+        WriteFile(hPipe,
+                  msg.c_str(),
+                  12,   // = length of string + terminating '\0' !!!
+                  &dwWritten,
+                  NULL);
+
+        CloseHandle(hPipe);
+    }
     return 0;
 }
