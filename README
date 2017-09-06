@@ -1,0 +1,40 @@
+AI TESTER PROGRAM
+
+The tester includes two different programs :
+-A simple min-max connect 4 AI which finds the best play for the current board (playboard.txt) and sends it to the Referee;
+-A Referee which plays each turn and set the winner if any.
+For the goods of testing, an Humain Machine Interface UI.exe is also included.
+
+HOW TO USE :
+
+-Open a cmd in the Tester file
+-Launch the program "Referee.exe" :
+Referee.exe [Depth] [Path of AI to be tested]
+The Tester program is launched by launching the Referee and giving it the depth of the AI included in the tester and path of the AI to be tested.
+The depth value is a balance between the tester's speed and the power of the tester's AI and depends mainly of the computer's power. If you're not sure about what number assign, take for example 7 and increase if the program's speed is correct.
+The path can be relative or absolute. 
+
+The Referee creates and sets the Playboard in "playboard.txt" file, launches one of the AI programs each tour, receives their play, and update the playboard.
+The mean of communication between the AI and the Referee is the following pipe :
+	    hPipe = CreateFile(TEXT("\\\\.\\pipe\\Pipe"), 
+                       GENERIC_READ | GENERIC_WRITE, 
+                       0,
+                       NULL,
+                       OPEN_EXISTING,
+                       0,
+                       NULL);
+On a play, the Referee verifies if it is valid (ie. the row is not full) ; if the play is invalid, the Referee stops the game and disqualifies the current player.
+After playing, the Referee checks is a player has won ; if so, it stops the game and gives the winner.
+
+The UI program is a Human Machine Interface where a user can see the state of the board and enter the row where he or she wants to play.
+
+The file "playboard.txt" displays the board like this :
+0 = Empty box
+1 = Player 1's token (Tester's AI)
+2 = Player 2's token (tested AI)
+0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 
+0 0 1 0 0 0 0 
+0 0 2 1 0 0 0 
+0 0 2 1 0 0 0

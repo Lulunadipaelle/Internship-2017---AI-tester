@@ -16,7 +16,7 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
     p2.setPlayer(false);
     Box source[6][7];
     Board playboard(source, 6, 7);
-    playboard = FileToBoard("F:\\My_Projects\\Internship-2017-AI-tester\\playboard.txt");
+    playboard = FileToBoard("..\\playboard.txt");
     
     //Display the board to the user
     cout << "Welcome, Player 2 !" << endl;
@@ -35,7 +35,6 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
     
     //Ask for the row to play
     cout << "Enter here the number of the row where you want to play (between 0 and 6)" << endl;
-	system("PAUSE");
     cin >> msg;
 	cout << endl << msg << endl;
 	
@@ -55,5 +54,6 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
 
         CloseHandle(hPipe);
     }
+    system("exit");
     return 0;
 }

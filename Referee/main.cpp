@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -24,17 +25,23 @@ int main(int argc, char **argv)
                             NMPWAIT_USE_DEFAULT_WAIT,
                             NULL);
 	
-    //int depth = atoi(argv[1]);
+    int depth = atoi(argv[1]);
+    /*const char* pgrm = argv[1];
+    const char* file = argv[2];*/
     bool win = false;
     Player p1, p2, Ap; //p1 = tester, p2 = newcomer, Ap = active player
     p2.setPlayer(false);
     int row = -1;
     Box source[6][7];
     Board playboard(source, 6, 7);
-    
+    ostringstream oss;
+    oss << "start cmd.exe /k ";
+    oss << argv[2];
+    string AIstr = oss.str();
     cout << endl;
     //Init board
-    BoardToFile(playboard, "F:\\My_Projects\\Internship-2017-AI-tester\\playboard.txt");
+    BoardToFile(playboard, "playboard.txt");
+    //BoardToFile(playboard, file);
     cout << "Board file set." << endl;
     //Set the begining player;
     if ((rand() % 2 + 1) == 1) {
@@ -44,10 +51,10 @@ int main(int argc, char **argv)
     }
     while (win == false) {
         if (Ap.getPlayer() == p1.getPlayer()) { //tester turn
-            //system("start cmd.exe /k F:\\My_Projects\\Internship-2017-AI-tester\\AI\\Debug\\AI.exe"); //TODO Set the exe file for the tester
+            system("start "" cmd.exe /k AI\\AI.exe"); //Set the exe file for the tester
                 cout << "Player 1 must send their play" << endl;
         } else { //AI turn
-            //system("start cmd.exe /k F:\\My_Projects\\Internship-2017-AI-tester\\UI\\Debug\\UI.exe"); //TODO Set the exe file for the AI to test
+            system(AIstr.c_str()); //Set the exe file for the AI to test
             cout << "Player 2 must send their play" << endl;
         }
         //Wait for the player program to send its play
@@ -73,10 +80,12 @@ int main(int argc, char **argv)
 		cout << endl << "Row received : " << buffer << endl;
         row = atoi(buffer);
         cout << "Playing on row " << row << endl;
-        playboard.setToken(row, Ap);
-        //TODO Changer la méthode setToken pour qu'elle renvoie une erreur si row est invalide
-        BoardToFile(playboard, "F:\\My_Projects\\Internship-2017-AI-tester\\playboard.txt");
-        //TODO établir conditions de victoire : réutiliser getScoreWinLose ?
+        if (playboard.setToken(row, Ap) == false) {
+            cout << "INVALID PLAY, PLAYER " << Ap.getPlayer() << " DISQUALIFED" << endl;
+            win = true;
+            Ap.setPlayer(!Ap.getPlayer());
+        }
+        BoardToFile(playboard, "playboard.txt");
         if (playboard.getScoreWinLose(Ap) == 2) {
             win = true;
         }

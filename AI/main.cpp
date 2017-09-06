@@ -16,7 +16,7 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
     p2.setPlayer(false);
     Box source[6][7];
     Board playboard(source, 6, 7);
-    playboard = FileToBoard("F:\\My_Projects\\Internship-2017-AI-tester\\playboard.txt");
+    playboard = FileToBoard("..\\playboard.txt");
     
     //Ask for the row to play
     std::pair<int, int> play = BestPlay(p1, playboard, depth);
@@ -39,5 +39,6 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
 
         CloseHandle(hPipe);
     }
+    system("exit");
     return 0;
 }
