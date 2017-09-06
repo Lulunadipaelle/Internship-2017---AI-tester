@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char **argv) //Find the best play from a given board in a file
 {   
-    int depth = 8;
+    int depth = atoi(argv[1]);
     string msg;
     HANDLE hPipe;
     DWORD dwWritten;
@@ -16,11 +16,10 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
     p2.setPlayer(false);
     Box source[6][7];
     Board playboard(source, 6, 7);
-    playboard = FileToBoard("..\\playboard.txt");
+    playboard = FileToBoard("playboard.txt");
     
     //Ask for the row to play
     std::pair<int, int> play = BestPlay(p1, playboard, depth);
-    //msg << play.second;
     msg = to_string(play.second);
 	
 	    hPipe = CreateFile(TEXT("\\\\.\\pipe\\Pipe"), 

@@ -24,20 +24,20 @@ int main(int argc, char **argv)
                             1024 * 16,
                             NMPWAIT_USE_DEFAULT_WAIT,
                             NULL);
-	
-    int depth = atoi(argv[1]);
-    /*const char* pgrm = argv[1];
-    const char* file = argv[2];*/
     bool win = false;
     Player p1, p2, Ap; //p1 = tester, p2 = newcomer, Ap = active player
     p2.setPlayer(false);
     int row = -1;
     Box source[6][7];
     Board playboard(source, 6, 7);
-    ostringstream oss;
-    oss << "start cmd.exe /k ";
-    oss << argv[2];
-    string AIstr = oss.str();
+    ostringstream ossUI, ossAI;
+    ossAI << "start "" cmd.exe /k AI\\AI.exe ";
+    ossAI << argv[1];
+    string AIstr = ossAI.str();
+    ossUI << "start cmd.exe /k ";
+    ossUI << argv[2];
+    string UIstr = ossUI.str();
+
     cout << endl;
     //Init board
     BoardToFile(playboard, "playboard.txt");
@@ -51,10 +51,10 @@ int main(int argc, char **argv)
     }
     while (win == false) {
         if (Ap.getPlayer() == p1.getPlayer()) { //tester turn
-            system("start "" cmd.exe /k AI\\AI.exe"); //Set the exe file for the tester
+            system(AIstr.c_str()); //Set the exe file for the tester
                 cout << "Player 1 must send their play" << endl;
         } else { //AI turn
-            system(AIstr.c_str()); //Set the exe file for the AI to test
+            system(UIstr.c_str()); //Set the exe file for the AI to test
             cout << "Player 2 must send their play" << endl;
         }
         //Wait for the player program to send its play

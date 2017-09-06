@@ -16,7 +16,7 @@ int main(int argc, char **argv) //Find the best play from a given board in a fil
     p2.setPlayer(false);
     Box source[6][7];
     Board playboard(source, 6, 7);
-    playboard = FileToBoard("..\\playboard.txt");
+    playboard = FileToBoard("playboard.txt");
     
     //Display the board to the user
     cout << "Welcome, Player 2 !" << endl;
